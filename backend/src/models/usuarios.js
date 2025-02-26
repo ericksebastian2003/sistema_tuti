@@ -80,7 +80,7 @@ export default mongoose.model('Usuario', usuarioSchema)
 
 
 //metodo para encriptar la contraseña de los usuarios
-usuarioSchema.methods.encrypPassword = async function(password){
+usuarioSchema.methods.encryptPassword = async function(password){
     const salt = await bcrypt.genSalt(10)
     return await bcrypt.hash(password,salt)
 }
