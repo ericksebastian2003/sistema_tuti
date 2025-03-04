@@ -1,10 +1,13 @@
-import Producto from "../models/Producto"; 
+import Producto from "../models/productos.js"; 
 
 // Listar todos los productos
 const listarProductos = async (req, res) => {
     try {
-        const productos = await Producto.find(); 
-        res.status(200).json(productos); 
+        const productos = await Producto.find()    
+        .select("nombre codigo descripcion categoria precio stock proveedor");
+        
+    
+        res.status(200).json(productos) 
     } catch (error) {
         res.status(500).json({ mensaje: "Error al obtener los productos", error });
     }
@@ -12,25 +15,15 @@ const listarProductos = async (req, res) => {
 
 // Crear un nuevo producto
 const crearProducto = async (req, res) => {
-    try {
-        // Crear el nuevo producto usando req.body
-        const producto = new Producto(req.body);
+    // Crear el nuevo producto usando req.body
+    const producto = new Producto(req.body);
 
-        // Guardar el producto en la base de datos
-        await producto.save();
+    // Guardar el producto en la base de datos
+    await producto.save();
 
-        // Responder con el producto creado
-        res.status(201).json(producto);
-    } catch (error) {
-        // Manejar errores, por ejemplo, si faltan campos según el esquema de Mongoose
-        if (error.name === 'ValidationError') {
-            return res.status(400).json({ mensaje: "Datos inválidos", error: error.errors });
-        }
-        // Error general
-        res.status(500).json({ mensaje: "Error al crear el producto", error });
-    }
-}
-
+    // Responder con el producto creado
+    res.status(201).json({msg:"producto creado con exito "});
+};
 // Actualizar un producto
 const actualizarProducto = async (req, res) => {
     const { id } = req.params;
@@ -74,7 +67,7 @@ const eliminarProducto = async (req, res) => {
         }
 
         // Eliminar el producto de la base de datos
-        await producto.remove();
+        await Producto.deleteOne({_id: id});
         res.status(200).json({ mensaje: "Producto eliminado con éxito" }); // Responder con éxito
     } catch (error) {
         res.status(500).json({ mensaje: "Error al eliminar el producto", error });

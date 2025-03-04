@@ -1,13 +1,10 @@
 import app from './server.js'
 import connection from './database.js'
-import CrearAdminInicial from './models/usuarios.js'
 
 
 const IniciarServidor = async () => {
     try {
-        await connection(); // conexion a la base de datos
-        await CrearAdminInicial(); // se crea el primer  y único admin
-        
+        await connection(); // conexion a la base de datos        
         app.listen(app.get('port'),()=>{
             console.log(`El servidor se está ejecutando http/localhost:${app.get('port')}`)
         })

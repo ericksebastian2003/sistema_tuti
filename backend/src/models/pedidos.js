@@ -1,12 +1,23 @@
 import mongoose from "mongoose";
 
 const pedidoSchema = new mongoose.Schema({
+    codigo: {
+        type: String,
+        required: true,
+        unique: true,
+        trim: true,
+        index: true
+    },
+    descripcion: {
+        type: String,
+        trim: true
+    },
     cliente: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Usuario',
+        ref: 'Cliente', 
         required: true
     },
-    productos: [{
+    producto: [{
         producto: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Producto',
@@ -21,10 +32,6 @@ const pedidoSchema = new mongoose.Schema({
     total: {
         type: Number,
         required: true
-    },
-    fecha: {
-        type: Date,
-        default: Date.now()
     }
 }, {
     timestamps: true
